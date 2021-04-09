@@ -14,5 +14,8 @@ Some helpful functions that keep being used in various of my repositories.
 * boxcar_convolution: Calculate the convolution of a boxcar function with another function.
 * piecewise_polynomial: Calculate the y values of a piecewise polynomial.
 
+## num_derive.py
+A simple method to calculate the derivative of discrete data.
+
 ## statsmodel_wrapper.py
 A universal sklearn-style wrapper for statsmodels regressors.
