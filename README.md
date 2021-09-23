@@ -7,7 +7,9 @@ Some helpful functions that keep being used in various of my repositories.
 * segment_xy_values: Segment the x_values and y_values according to segment borders.
 
 ## math_functions.py
-* langmuir_isotherm: Calculate the q_e values of a Langmuir isotherm.
+* langmuir_isotherm: Calculate the q_e values of a simple Langmuir isotherm.
+* langmuir_isotherm_hydrogel: Calculate the adsotpion inside a hydrogel based on a Langmuir model taking the swelling into account.
+* langmuir_comp: Calculate the q_e values of a Langmuir isotherm taking into account competetive adsorption of two species.
 * triangle: Calculate a triangle function.
 * gaussian: Calculate one or a superposition of Gaussian normal distributions.
 * boxcar: Calculate a boxcar function.
