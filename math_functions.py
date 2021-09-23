@@ -57,6 +57,36 @@ def langmuir_isotherm_hydrogel(c_e, q_m, K_s, phi_h2o, rho_hydrogel=1):
     """
     return c_e*phi_h2o/rho_hydrogel + q_m * c_e * K_s/(1 + c_e * K_s)
 
+def langmuir_comp(c_e_1, c_e_2, q_m, K_s_1, K_s_2):
+    """
+    Calculate the q_e values of a Langmuir isotherm for competitive adsorption.
+
+    Parameters
+    ----------
+    c_e_1 : ndarray
+        The equilibrium concentrations of adsorbat 1 in the liquid phase. Can 
+        have any shape,so an (M, N) array may be interpreted as M data rows
+        with N data points.
+    c_e_2 : ndarray
+        The equilibrium concentrations of adsorbat 2 in the liquid phase. Can 
+        have any shape,so an (M, N) array may be interpreted as M data rows
+        with N data points.
+    q_m : float
+        The adsorption capacity of the adsorber.
+    K_s_1 : float
+        The equilibrium constant of adsorption and desorption of adsorbat 1.
+    K_s_2 : float
+        The equilibrium constant of adsorption and desorption of adsorbat 2.
+
+    Returns
+    -------
+    ndarray
+        The equilibrium concentrations q_e in the adsorber. Has the same shape
+        like c_e.
+
+    """
+    return q_m * c_e_1 * K_s_1/(1 + c_e_1 * K_s_1 + c_e_2 * K_s_2)
+
 def triangle(x, start_left, start_right, x_max, y_max, y_offset=0):
     """
     Calculate a triangle function. 
