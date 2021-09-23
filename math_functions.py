@@ -35,18 +35,18 @@ def langmuir_isotherm_hydrogel(c_e, q_m, K_s, phi_h2o, rho_hydrogel=1):
 
     Parameters
     ----------
-    c_e : TYPE
+    c_e : ndarray
         The equilibrium concentrations in the liquid phase. Can have any shape,
         so an (M, N) array may be interpreted as M data rows with N data
         points. It is assumed that the aqueous phase within the hydrogel has
         the same concentration like c_e.
-    q_m : TYPE
+    q_m : float
         The adsorption capacity of the polymer network within the hydrogel.
-    K_s : TYPE
+    K_s : float
         The equilibrium constant of adsorption and desorption.
-    phi_h2o : TYPE
+    phi_h2o : float
         The volume fraction of water inside the hydrogel.
-    rho_hydrogel : TYPE, optional
+    rho_hydrogel : float, optional
         The density of the hydrogel in g/mL. The default is 1.
 
     Returns
