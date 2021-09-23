@@ -29,6 +29,34 @@ def langmuir_isotherm(c_e, q_m, K_s):
     """
     return q_m * c_e * K_s/(1 + c_e * K_s)
 
+def langmuir_isotherm_hydrogel(c_e, q_m, K_s, phi_h2o, rho_hydrogel=1):
+    """
+    Calculate the a_e values of a Langmuir isotherm in a hydrogel.
+
+    Parameters
+    ----------
+    c_e : TYPE
+        The equilibrium concentrations in the liquid phase. Can have any shape,
+        so an (M, N) array may be interpreted as M data rows with N data
+        points. It is assumed that the aqueous phase within the hydrogel has
+        the same concentration like c_e.
+    q_m : TYPE
+        The adsorption capacity of the polymer network within the hydrogel.
+    K_s : TYPE
+        The equilibrium constant of adsorption and desorption.
+    phi_h2o : TYPE
+        The volume fraction of water inside the hydrogel.
+    rho_hydrogel : TYPE, optional
+        The density of the hydrogel in g/mL. The default is 1.
+
+    Returns
+    -------
+        The equilibrium concentrations a_e in the adsorber. Has the same shape
+        like c_e.
+
+    """
+    return c_e*phi_h2o/rho_hydrogel + q_m * c_e * K_s/(1 + c_e * K_s)
+
 def triangle(x, start_left, start_right, x_max, y_max, y_offset=0):
     """
     Calculate a triangle function. 
