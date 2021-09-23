@@ -180,6 +180,32 @@ def gaussian(x, amp, x_offset, y_offset, sigma):
         y_offset[:, np.newaxis], axis=0)
 
 def boxcar(x, boxcar_start, boxcar_end, y_offset=0, amp=1):
+    """
+    Calculate a boxcar function.
+
+    The boxcar function has a constant value inside the box and another value,
+    typically zero, outside of the box.
+
+    Parameters
+    ----------
+    x : ndarray
+        A one-dimensional array with the x values used for calculations.
+    boxcar_start : float
+        The left edge value of the box, must be smaller than boxcar_end.
+    boxcar_end : float
+        The right edge value of the box, must be greater than boxcar_start.
+    y_offset : float, optional
+        The value of the boxcar function outside of the box. The default is 0.
+    amp : float, optional
+        The value of the boxcar function inside the box. The default is 1.
+
+    Returns
+    -------
+    y_boxcar : ndarray
+        An array containing the function values of the boxcar function. Has the
+        same shape like x.
+
+    """
     boxcar_mask = np.logical_and(
         x >= min(boxcar_start, boxcar_end),
         x <= max(boxcar_start, boxcar_end))
@@ -189,6 +215,38 @@ def boxcar(x, boxcar_start, boxcar_end, y_offset=0, amp=1):
 
 def boxcar_convolution(x, boxcar_start, boxcar_end, convolution_function,
                        con_func_params, y_offset=0):
+    """
+    Calculate a convolution of a boxcar function and another function.
+
+    This useful for example to estimate the intensity distribution when a
+    Gaussian focus is moved through a layer with constant thickness, e.g. in
+    confocal fluorescence or Raman microscopy. In this case,
+    concolution_function would be gaussian.
+
+    Parameters
+    ----------
+    x : ndarray
+        A one-dimensional array with the x values used for calculations.
+    boxcar_start : float
+        The left edge value of the box, must be smaller than boxcar_end.
+    boxcar_end : float
+        The right edge value of the box, must be greater than boxcar_start.
+    convolution_function : callable
+        A callable function that takes x as the first parameter and
+        con_func_params as additional arguments.
+    con_func_params : list of float
+        Additional parameters passed to convolution_function.
+    y_offset : float, optional
+        The value the convoluted function is shifted upwards after calculation.
+        The default is 0.
+
+    Returns
+    -------
+    function_values : ndarray
+        An array containing the function values of the convoluted function.
+        Has the same shape like x.
+
+    """
     x_spacing = np.abs(x[1]-x[0])
     x_min = x[0]
     x_max = x[-1]
