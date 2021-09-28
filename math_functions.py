@@ -317,3 +317,43 @@ def piecewise_polynomial(x_values, coefs, segment_borders=[]):
                               else poly_vals[:-1])
 
     return np.concatenate(curve_segments)
+
+def flory_rehner(v_2s, M_n, v_2r, chi, rho_swelling=1, rho_polymer=1,
+                 molar_mass_swelling=18):
+    """
+    Calculate 1/M_c according to the Flory-Rehner equation.
+
+    Parameters
+    ----------
+    v_2s : ndarray
+        The polymer volume fractions in a hydrogel after swelling to
+        equilibrium.
+    M_n : float
+        Number average molar mass of the polymer before cross-linking.
+    v_2r : float
+        The polymer volume fraction in the hydrogel after cross-linking but
+        before swelling in additional solvent. Often approximated with the
+        polymer volume fraction in the solution state before cross-linking.
+    chi : float
+        The Flory-Huggins interaction parameter for the polymer-solvent pair
+        used.
+    rho_swelling : float, optional
+        The density of the swelling medium in g/mL. Default is 1.
+    rho_polymer : float, optional
+        The density of the polymer in g/mL. Default is 1.
+    molar_mass_swelling : float, optional
+        The molar mass of the swelling medium in g/mol. Default is 18.
+
+    Returns
+    -------
+    ndarray
+        The 1/M_c values of the hydrogels, has the same length like v_2s.
+
+    """
+
+    return (
+        2/M_n -
+        rho_swelling/rho_polymer/molar_mass_swelling*
+        (np.log(1-v_2s)+v_2s+chi*v_2s**2)/
+        (v_2r*((v_2s/v_2r)**(1/3)-0.5*v_2s/v_2r))
+        )
