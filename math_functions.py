@@ -2,6 +2,7 @@
 
 import numpy as np
 from scipy import integrate
+from scipy.special import erf
 
 from .array_tools import segment_xy_values
 
@@ -357,3 +358,72 @@ def flory_rehner(v_2s, M_n, v_2r, chi, rho_swelling=1, rho_polymer=1,
         (np.log(1-v_2s)+v_2s+chi*v_2s**2)/
         (v_2r*((v_2s/v_2r)**(1/3)-0.5*v_2s/v_2r))
         )
+
+def Herschel_Bulkley(x, yield_stress, k, n):
+    return yield_stress + k * x**n
+
+def cum_dist_normal(x_values, sigma, x_offset, amp=1):
+    """
+    Cumulative distribution function for the normal distribution.
+
+    Parameters
+    ----------
+    x_values : ndarray
+        The x_values used for the calculation. Can have any shape.
+    sigma : float
+        The standard deviation of the normal distribution.
+    x_offset : float
+        The expected value of the normal distribution.
+    amp : float, optional
+        The amplitude, i.e. the total integral of the normal distribution.
+        The default is 1.
+
+    Returns
+    -------
+    ndarray
+        The cumulative distribution function of a normal distribution. Has the
+        same shape like x_values.
+
+    """
+    return amp*1/2*(1+erf((x_values-x_offset)/np.sqrt(2*sigma**2)))
+
+def cum_dist_normal_with_rise(x_values, sigma, x_offset, slope, amp=1,
+                              linear_rise='full'):
+    """
+    Superposition of cum_dist_normal and a linear function through the origin.
+
+    Parameters
+    ----------
+    x_values : ndarray
+        The x_values used for the calculation.
+    sigma : float
+        See docstring of cum_dist_normal.
+    x_offset : float
+        See docstring of cum_dist_normal.
+    slope : float
+        The slope of the linear function.
+    amp : float, optional
+        See docstring of cum_dist_normal. The default is 1.
+    linear_rise : string, optional
+        Allowed values are 'full' (linear rise over the entire x_values range),
+        'left' (linear rise only left of x_offset) and 'right' (linear rise
+        only right of x_offset). The default is 'full'.
+
+    Returns
+    -------
+    function_values : ndarray
+        The calculated function values.
+
+    """
+    function_values = cum_dist_normal(x_values, sigma, x_offset, amp=amp)
+    if linear_rise == 'full':
+        function_values += slope * x_values
+    else:
+        linear_part = np.zeros_like(function_values)
+        if linear_rise == 'left':
+            linear_mask = x_values<=x_offset
+        elif linear_rise == 'right':
+            linear_mask = x_values>=x_offset
+        linear_part[linear_mask] = (x_values[linear_mask]-x_offset)*slope
+        function_values += linear_part
+    return function_values
