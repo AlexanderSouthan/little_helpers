@@ -1,4 +1,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Build Status](https://app.travis-ci.com/AlexanderSouthan/little_helpers.svg?branch=main)](https://app.travis-ci.com/AlexanderSouthan/little_helpers)
+[![codecov](https://codecov.io/gh/AlexanderSouthan/little_helpers/branch/main/graph/badge.svg?token=W7O1I2YKGO)](https://codecov.io/gh/AlexanderSouthan/little_helpers)
 
 # little_helpers
 Some helpful functions that keep being used in various of my repositories.
