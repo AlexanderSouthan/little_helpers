@@ -1,4 +1,4 @@
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 # little_helpers
 Some helpful functions that keep being used in various of my repositories.
@@ -17,6 +17,10 @@ Some helpful functions that keep being used in various of my repositories.
 * boxcar: Calculate a boxcar function.
 * boxcar_convolution: Calculate the convolution of a boxcar function with another function.
 * piecewise_polynomial: Calculate the y values of a piecewise polynomial.
+* flory_rehner: Calculate 1/M_c according to the Flory-Rehner equation.
+* Herschel_Bulkley: Calculate the stress according tot he Herschel-Bulkley model.
+* cum_dist_normal: Cumulative distribution function for the normal distribution.
+* cum_dist_normal_with_rise: Superposition of cum_dist_normal and a linear function through the origin.
 
 ## num_derive.py
 A simple method to calculate the derivative of discrete data.
