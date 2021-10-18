@@ -22,6 +22,9 @@ def y_at_x(x, x_values, y_values):
         x_values that are clostest to the values in x.
 
     """
+    if isinstance(x_values, list):
+        y_values = np.array(y_values)
+
     return y_values[closest_index(x, x_values)]
 
 def closest_index(x, x_values):
@@ -32,7 +35,7 @@ def closest_index(x, x_values):
     ----------
     x : float or list of float
         A single value or a list of values to look for in x_values.
-    x_values : ndaaray
+    x_values : ndarray or list
         The array with the values to compare to x.
 
     Returns
@@ -41,6 +44,9 @@ def closest_index(x, x_values):
         The indices of the values in x_values that are clostest to x.
 
     """
+    if isinstance(x_values, list):
+        x_values = np.array(x_values)
+
     return np.argmin(np.abs(x-x_values[:, np.newaxis]), axis=0)
 
 def segment_xy_values(x_values, segment_borders, y_values=None):
@@ -53,8 +59,8 @@ def segment_xy_values(x_values, segment_borders, y_values=None):
     Parameters
     ----------
     x_values : ndarray
-        A 1D array with the length M holding the independent varibale used for
-        the fit.
+        A 1D array with the length M holding the independent variable used for
+        the fit. Must be sorted.
     segment_borders : list of int or float
         The values with respect to x_values at which the data is divided into
         segments. An arbitrary number of segment borders may be given, and it
@@ -74,6 +80,16 @@ def segment_xy_values(x_values, segment_borders, y_values=None):
         function.
 
     """
+    if isinstance(x_values, list):
+        x_values = np.array(x_values)
+
+    if (not np.all(x_values[:-1] <= x_values[1:])) or (
+            not np.all(x_values[:-1] >= x_values[1:])):
+        sort_index = np.argsort(x_values)
+        x_values = x_values[sort_index]
+        if y_values is not None:
+            y_values = y_values[sort_index]
+
     # segment_borders are sorted by x values in segment_borders in order to
     # avoid problems during segmentation
     segment_borders = np.sort(segment_borders)
