@@ -3,7 +3,10 @@
 [![codecov](https://codecov.io/gh/AlexanderSouthan/little_helpers/branch/main/graph/badge.svg?token=W7O1I2YKGO)](https://codecov.io/gh/AlexanderSouthan/little_helpers)
 
 # little_helpers
-Some helpful functions that keep being used in various of my repositories.
+Some helpful functions that keep being used in various of my repositories, install via:
+```
+pip install little_helpers
+```
 
 ## array_tools.py
 * y_at_y: Find values in y_values that belongs to the values in x_values clostest to x.
