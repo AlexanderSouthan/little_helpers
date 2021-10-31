@@ -1,0 +1,6 @@
+name: little_helpers 
+dependencies:
+  - numpy
+  - scikit-learn
+  - scipy
+  - statsmodels
