@@ -58,7 +58,8 @@ def segment_xy_values(x_values, segment_borders, y_values=None):
     ----------
     x_values : ndarray
         A 1D array with the length M holding the independent variable used for
-        the fit. Must be sorted.
+        the fit. Must be sorted for the segmetation, so is sorted ascending if
+        it is not already.
     segment_borders : list of int or float
         The values with respect to x_values at which the data is divided into
         segments. An arbitrary number of segment borders may be given, and it
@@ -82,8 +83,7 @@ def segment_xy_values(x_values, segment_borders, y_values=None):
     if y_values is not None:
         y_values = np.asarray(y_values)
 
-    if (not np.all(x_values[:-1] <= x_values[1:])) or (
-            not np.all(x_values[:-1] >= x_values[1:])):
+    if (not np.all(x_values[:-1] <= x_values[1:])):
         sort_index = np.argsort(x_values)
         x_values = x_values[sort_index]
         if y_values is not None:
@@ -93,12 +93,12 @@ def segment_xy_values(x_values, segment_borders, y_values=None):
     # avoid problems during segmentation
     segment_borders = np.sort(segment_borders)
 
-    ascending_x = x_values[1] > x_values[0]
+    # ascending_x = x_values[1] > x_values[0]
 
-    if not ascending_x:
-        x_values = np.flip(x_values)
-        if y_values is not None:
-            y_values = np.flip(y_values)
+    # if not ascending_x:
+    #     x_values = np.flip(x_values)
+    #     if y_values is not None:
+    #         y_values = np.flip(y_values)
 
     # Segmentation indices are the indices of the values in x_values clostest
     # to the values given by segment_borders. At these points, the data is
@@ -127,10 +127,10 @@ def segment_xy_values(x_values, segment_borders, y_values=None):
         if y_values is not None:
             y_segments.append(y_values[curr_start:curr_end + curr_add])
 
-    if not ascending_x:
-        x_segments = [x_seg[::-1] for x_seg in x_segments][::-1]
-        if y_values is not None:
-            y_segments = [y_seg[::-1] for y_seg in y_segments][::-1]
+    # if not ascending_x:
+    #     x_segments = [x_seg[::-1] for x_seg in x_segments][::-1]
+    #     if y_values is not None:
+    #         y_segments = [y_seg[::-1] for y_seg in y_segments][::-1]
 
     if y_values is not None:
         return (x_segments, y_segments)
