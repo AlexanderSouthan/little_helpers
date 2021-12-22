@@ -32,7 +32,7 @@ class TestArrayTools(unittest.TestCase):
         self.assertEqual(len(segs[2]), 1)
 
         # test with ascending ndarray input
-        sort_idx = np.argsort([5, 8, 9, 88, 56, 22])
+        sort_idx = np.argsort(x_list)
         x_array = np.array(x_list)[sort_idx]
         y_array = np.array(y_list)[sort_idx]
 
@@ -49,9 +49,8 @@ class TestArrayTools(unittest.TestCase):
         self.assertEqual(len(segs[2]), 1)
 
         # test with descending ndarray input
-        sort_idx = sort_idx[::-1]
-        x_array = np.array(x_list)[sort_idx]
-        y_array = np.array(y_list)[sort_idx]
+        x_array = np.array(x_list)[sort_idx[::-1]]
+        y_array = np.array(y_list)[sort_idx[::-1]]
 
         segs = array_tools.segment_xy_values(x_array, [23, 86])
 
@@ -59,3 +58,7 @@ class TestArrayTools(unittest.TestCase):
         self.assertEqual(len(segs[0]), 4)
         self.assertEqual(len(segs[1]), 3)
         self.assertEqual(len(segs[2]), 1)
+
+        # test segmentation with x and y values
+        segs_x, segs_y = array_tools.segment_xy_values(
+            x_array, [23, 86], y_values=y_array)

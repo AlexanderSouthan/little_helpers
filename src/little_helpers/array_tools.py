@@ -79,6 +79,8 @@ def segment_xy_values(x_values, segment_borders, y_values=None):
 
     """
     x_values = np.asarray(x_values)
+    if y_values is not None:
+        y_values = np.asarray(y_values)
 
     if (not np.all(x_values[:-1] <= x_values[1:])) or (
             not np.all(x_values[:-1] >= x_values[1:])):
