@@ -16,7 +16,7 @@ class TestArrayTools(unittest.TestCase):
 
     def test_array_tools(self):
 
-        # check for robustness to list input
+        # check for robustness to unsorted list input
         x_list = [5, 8, 9, 88, 56, 22]
         y_list = [33, 99, 111, 2222, 8, 1]
         idx = array_tools.closest_index(68, x_list)
@@ -31,5 +31,31 @@ class TestArrayTools(unittest.TestCase):
         self.assertEqual(len(segs[1]), 3)
         self.assertEqual(len(segs[2]), 1)
 
-        # further tests with ndarrays, ascending and descending sorted list
-        # and ndarrays should be included
+        # test with ascending ndarray input
+        sort_idx = np.argsort([5, 8, 9, 88, 56, 22])
+        x_array = np.array(x_list)[sort_idx]
+        y_array = np.array(y_list)[sort_idx]
+
+        idx = array_tools.closest_index(68, x_array)
+        y_at_x = array_tools.y_at_x(7, x_array, y_array)
+
+        segs = array_tools.segment_xy_values(x_array, [23, 86])
+
+        self.assertEqual(idx, 4)
+        self.assertEqual(y_at_x, 99)
+        self.assertEqual(len(segs), 3)
+        self.assertEqual(len(segs[0]), 4)
+        self.assertEqual(len(segs[1]), 3)
+        self.assertEqual(len(segs[2]), 1)
+
+        # test with descending ndarray input
+        sort_idx = sort_idx[::-1]
+        x_array = np.array(x_list)[sort_idx]
+        y_array = np.array(y_list)[sort_idx]
+
+        segs = array_tools.segment_xy_values(x_array, [23, 86])
+
+        self.assertEqual(len(segs), 3)
+        self.assertEqual(len(segs[0]), 4)
+        self.assertEqual(len(segs[1]), 3)
+        self.assertEqual(len(segs[2]), 1)
