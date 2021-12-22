@@ -48,7 +48,9 @@ def eds_to_volume_fraction(eds, rho_polymer=1, rho_swelling=1,
     if eds_mode == 'subtracted':
         eds = eds
     elif eds_mode == 'plain':
-        eds -= 1
+        eds = eds.copy() - 1
+    else:
+        raise ValueError('No valid value for eds_mode given.')
 
     v_2s = 1/(eds*rho_swelling/rho_polymer+1)
     if output == 'polymer':

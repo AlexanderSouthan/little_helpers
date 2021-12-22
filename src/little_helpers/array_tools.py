@@ -22,8 +22,7 @@ def y_at_x(x, x_values, y_values):
         x_values that are clostest to the values in x.
 
     """
-    if isinstance(x_values, list):
-        y_values = np.array(y_values)
+    y_values = np.asarray(y_values)
 
     return y_values[closest_index(x, x_values)]
 
@@ -44,8 +43,7 @@ def closest_index(x, x_values):
         The indices of the values in x_values that are clostest to x.
 
     """
-    if isinstance(x_values, list):
-        x_values = np.array(x_values)
+    x_values = np.asarray(x_values)
 
     return np.argmin(np.abs(x-x_values[:, np.newaxis]), axis=0)
 
@@ -80,8 +78,7 @@ def segment_xy_values(x_values, segment_borders, y_values=None):
         function.
 
     """
-    if isinstance(x_values, list):
-        x_values = np.array(x_values)
+    x_values = np.asarray(x_values)
 
     if (not np.all(x_values[:-1] <= x_values[1:])) or (
             not np.all(x_values[:-1] >= x_values[1:])):

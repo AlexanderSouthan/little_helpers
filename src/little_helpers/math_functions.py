@@ -28,6 +28,8 @@ def langmuir_isotherm(c_e, q_m, K_s):
         like c_e.
 
     """
+    c_e = np.asarray(c_e)
+
     return q_m * c_e * K_s/(1 + c_e * K_s)
 
 def langmuir_isotherm_hydrogel(c_e, q_m, K_s, phi_h2o, rho_hydrogel=1):
@@ -56,6 +58,8 @@ def langmuir_isotherm_hydrogel(c_e, q_m, K_s, phi_h2o, rho_hydrogel=1):
         like c_e.
 
     """
+    c_e = np.asarray(c_e)
+
     return c_e*phi_h2o/rho_hydrogel + q_m * c_e * K_s/(1 + c_e * K_s)
 
 def langmuir_comp(c_e_1, c_e_2, q_m, K_s_1, K_s_2):
@@ -86,6 +90,9 @@ def langmuir_comp(c_e_1, c_e_2, q_m, K_s_1, K_s_2):
         like c_e.
 
     """
+    c_e_1 = np.asarray(c_e_1)
+    c_e_2 = np.asarray(c_e_2)
+
     return q_m * c_e_1 * K_s_1/(1 + c_e_1 * K_s_1 + c_e_2 * K_s_2)
 
 def triangle(x, start_left, start_right, x_max, y_max, y_offset=0):
@@ -125,6 +132,8 @@ def triangle(x, start_left, start_right, x_max, y_max, y_offset=0):
         the same shape like x.
 
     """
+    x = np.asarray(x)
+
     left_mask = np.logical_and(
         x >= min(start_left, x_max),
         x <= max(start_left, x_max))
@@ -135,7 +144,7 @@ def triangle(x, start_left, start_right, x_max, y_max, y_offset=0):
     left_slope = (y_max-y_offset)/(x_max - start_left)
     right_slope = -(y_max-y_offset)/(start_right - x_max)
 
-    triangle = np.full_like(x, y_offset)
+    triangle = np.full_like(x, y_offset, dtype='float')
     triangle[left_mask] += left_slope * (x[left_mask] - start_left)
     triangle[right_mask] += right_slope * (x[right_mask] - start_right)
     return triangle
@@ -207,6 +216,8 @@ def boxcar(x, boxcar_start, boxcar_end, y_offset=0, amp=1):
         same shape like x.
 
     """
+    x = np.asarray(x)
+
     boxcar_mask = np.logical_and(
         x >= min(boxcar_start, boxcar_end),
         x <= max(boxcar_start, boxcar_end))
@@ -305,7 +316,9 @@ def piecewise_polynomial(x_values, coefs, segment_borders=[]):
 
     """
 
-    if segment_borders:
+    segment_borders = np.array(segment_borders, ndmin=1)
+
+    if segment_borders.size > 0:
         x_segments = segment_xy_values(x_values, segment_borders)
     else:
         x_segments = [x_values]
@@ -351,6 +364,7 @@ def flory_rehner(v_2s, M_n, v_2r, chi, rho_swelling=1, rho_polymer=1,
         The 1/M_c values of the hydrogels, has the same length like v_2s.
 
     """
+    v_2s = np.asarray(v_2s)
 
     return (
         2/M_n -
@@ -360,6 +374,8 @@ def flory_rehner(v_2s, M_n, v_2r, chi, rho_swelling=1, rho_polymer=1,
         )
 
 def Herschel_Bulkley(x, yield_stress, k, n):
+    x = np.asarray(x)
+
     return yield_stress + k * x**n
 
 def cum_dist_normal(x_values, sigma, x_offset, amp=1):
@@ -385,6 +401,8 @@ def cum_dist_normal(x_values, sigma, x_offset, amp=1):
         same shape like x_values.
 
     """
+    x_values = np.asarray(x_values)
+
     return amp*1/2*(1+erf((x_values-x_offset)/np.sqrt(2*sigma**2)))
 
 def cum_dist_normal_with_rise(x_values, sigma, x_offset, slope, amp=1,
@@ -415,6 +433,8 @@ def cum_dist_normal_with_rise(x_values, sigma, x_offset, slope, amp=1,
         The calculated function values.
 
     """
+    x_values = np.asarray(x_values)
+
     function_values = cum_dist_normal(x_values, sigma, x_offset, amp=amp)
     if linear_rise == 'full':
         function_values += slope * x_values
