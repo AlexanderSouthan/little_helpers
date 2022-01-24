@@ -3,6 +3,6 @@ scikit-learn
 scipy
 statsmodels
 sympy
-docx-python
+python-docx
 latex2mathml
 lxml
