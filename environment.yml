@@ -4,3 +4,9 @@ dependencies:
   - scikit-learn
   - scipy
   - statsmodels
+  - pip
+  - pip:
+    - sympy
+    - docx-python
+    - latex2mathml
+    - lxml
