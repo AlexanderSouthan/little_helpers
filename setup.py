@@ -4,5 +4,5 @@ setup(
     name='little_helpers',
     version='0.0.3',
     packages=find_packages(where='src'),
-    install_requires=['numpy', 'scikit-learn', 'scipy', 'statsmodels']
+    install_requires=['numpy', 'scikit-learn', 'scipy', 'statsmodels', 'sympy', 'docx-python', 'latex2mathml', 'lxml']
 )
