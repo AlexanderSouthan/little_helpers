@@ -7,6 +7,6 @@ dependencies:
   - pip
   - pip:
     - sympy
-    - docx-python
+    - python-docx
     - latex2mathml
     - lxml
