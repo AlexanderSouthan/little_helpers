@@ -2,3 +2,7 @@ numpy
 scikit-learn
 scipy
 statsmodels
+sympy
+docx-python
+latex2mathml
+lxml
