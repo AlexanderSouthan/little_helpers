@@ -12,16 +12,13 @@ import matplotlib.patches as patches
 from little_helpers.geometry import reflect_line_in_box
 
 
-# There seems to be a problem with the reflect function when it is out of the
-# pyRandomWalk package. This is not resolved currently.
-box = {'x': [-0.3, 0.5], 'y':[-1.2, 1.5]}
-
+# 2D box
+box = {'x': [-0.9, 0.5], 'y':[-1.2, 1.5]}
 
 p1 = np.array([[0, 0]])
-p2 = np.array([[3.3, -3]])
+p2 = np.array([[13, -9]])
 
-points_on_box, final_points = reflect_line_in_box(
-    p1, p2, box=box)
+points_on_box, final_points = reflect_line_in_box(p1, p2, limits=box)
 
 fig1, ax1 = plt.subplots(dpi=600)
 ax1.plot(points_on_box[0][0], points_on_box[0][1], ls='-', c='k')
@@ -40,3 +37,36 @@ box = patches.Rectangle((box['x'][0], box['y'][0]),
                         linewidth=1, edgecolor='k', facecolor='none', ls='--')
 ax1.add_patch(box)
 ax1.set_aspect('equal', adjustable='box')
+
+
+# 3D box
+p1 = np.array([[0.4, 3, -2]])
+p2 = np.array([[8.6, -5.3, -1]])
+
+limits = {'x': [-1, 1], 'y':[-1, 3], 'z':[-5, -1.6]}
+
+re_box, p_f = reflect_line_in_box(p1, p2, limits=limits)
+
+# Probe über Berechnung von Linienlänge zwischen Punkten vor und nach Spiegelung
+lengths_start = np.sqrt(((p1-p2)**2).sum(axis=1))
+
+all_points = [[np.concatenate([[p1[pp, ii]], re_box[pp][ii], [p_f[pp, ii]]]) for ii in range(len(p1[0]))] for pp in range(p1.shape[0])]
+lengths_end = np.array([])
+for curr_points in all_points:
+    diffs = []
+    for curr_dim in range(p1.shape[1]):
+        diffs.append(np.diff(curr_points[curr_dim]))
+    curr_length = 0
+    for curr_diffs in diffs:
+        curr_length += curr_diffs**2
+    curr_length = np.sqrt(curr_length).sum()
+    lengths_end = np.append(lengths_end, curr_length)
+
+
+fig_3d = plt.figure()
+ax_3d = fig_3d.add_subplot(111, projection='3d')
+
+point = 0
+for pp in [point]:#range(p1.shape[0]):
+    ax_3d.plot(*[np.concatenate([[p1[pp, ii]], re_box[pp][ii], [p_f[pp, ii]]]) for ii in range(len(p1[0]))], marker='o')
+    ax_3d.scatter(*[[p1[pp, ii], p_f[pp, ii]] for ii in range(len(p1[0]))], c='r', s=150)

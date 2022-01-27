@@ -62,14 +62,43 @@ def line_through_box(x_values, y_values, box={'x': [-1, 1], 'y': [-1, 1]}):
     else:
         return (0, [], [])
 
-def reflect_line_in_box(start, end, box={'x': [-1, 1], 'y': [-1, 1]}):
+
+def reflect_line_in_box(start, end, limits):
     """
-    This funtion was copied from pyRandomWalk, but does not work properly, yet.
+    Reflect a line defined by two points within a one- to threedimensional box.
+
+    Parameters
+    ----------
+    start : 2D ndarray
+        The start points of the lines to be reflected. Must be a 2D array with
+        the shape (n, d) where n is the number of data points and d is the
+        dimension (between 1 and 3).
+    end : 2D ndarray
+        The end points of the lines to be reflected. Must be a 2D array with
+        the shape (n, d) where n is the number of data points and d is the
+        dimension (between 1 and 3).
+    limits : dict
+        A dictionary containing the box limits. Cancontain the keys 'x' for
+        the lower and upper limits on the x coordinate, 'y' for the lower and
+        upper limits on the y coordinate, and 'z' for the lower and upper
+        limits on the z coordinate, all given as a list or ndarray with two
+        entries. Must cover at least the dimensions given in start and end.
+
+
+    Returns
+    -------
+    re_box : list of ndarrays
+        The coordinates of the reflection points on the box limits. The list
+        contains n elements and each element is a 2D ndarray with the
+        coordinates.
+    final : ndarray
+        The coordinates of the final end points after all reflections. Has the
+        same shape like start and end.
 
     """
     # The datapoints defining the lines to be reflected
-    start = np.asarray(start)
-    end = np.asarray(end)
+    start = np.asarray(start, dtype='float')
+    end = np.asarray(end, dtype='float')
     if start.shape == end.shape:
         dimensions = start.shape[1]
     else:
@@ -82,11 +111,7 @@ def reflect_line_in_box(start, end, box={'x': [-1, 1], 'y': [-1, 1]}):
     direction = np.sign(point_diff).astype('int')
 
     # characteristics of the box limiting the allowed space
-    limits = np.array(
-        [box[ii][:dimensions] for ii in ['x', 'y', 'z']
-         [:dimensions]]).T
-    print(limits)
-    # limits = np.array([x_lim, y_lim]).T
+    limits = np.array([limits[ii] for ii in ['x', 'y', 'z'][:dimensions]]).T
     box_diff = np.zeros(dimensions)
     for curr_dim in range(dimensions):
         if np.all(limits[:, curr_dim]):
