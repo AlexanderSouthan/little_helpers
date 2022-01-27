@@ -26,6 +26,27 @@ def y_at_x(x, x_values, y_values):
 
     return y_values[closest_index(x, x_values)]
 
+def closest_value(x, x_values):
+    """
+    Find value in x_values that is closest to x.
+
+    Parameters
+    ----------
+    x : float
+        The values to look for in x_values.
+    x_values : ndarray
+        The array containing the numbers to look through.
+
+    Returns
+    -------
+    ndarray
+        The value in x_values closest to x.
+
+    """
+    x_values = np.asarray(x_values)
+
+    return x_values[closest_index(x, x_values)]
+
 def closest_index(x, x_values):
     """
     Find the index of a value in array x_values that is clostest to x.
