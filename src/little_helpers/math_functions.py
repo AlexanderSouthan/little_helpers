@@ -137,17 +137,17 @@ def langmuir_comp_hydrogel(
     return (c_e_1*phi_h2o/rho_hydrogel +
             q_m * c_e_1 * K_s_1/(1 + c_e_1 * K_s_1 + c_e_2 * K_s_2))
 
-def conductivity_hydrogel(c_e_1, c_e_2, sigma0, m1, m2, qm1, qm2, ks1, ks2,
-                          phi_h2o, rho_hydrogel):
+def conductivity_hydrogel(c_e_1, c_e_2, sigma0, m1, m2, qm1, qm2, ks1_1, ks1_2,
+                          ks2_1, ks2_2, phi_h2o, rho_hydrogel):
     c_e_1 = np.asarray(c_e_1)
     c_e_2 = np.asarray(c_e_2)
 
     sigma = (sigma0 +
              m1 * langmuir_comp_hydrogel(
-                 c_e_1, c_e_2, qm1, ks1, ks2, phi_h2o,
+                 c_e_1, c_e_2, qm1, ks1_1, ks1_2, phi_h2o,
                  rho_hydrogel=rho_hydrogel) + 
              m2 * langmuir_comp_hydrogel(
-                 c_e_2, c_e_1, qm2, ks2, ks1, phi_h2o,
+                 c_e_2, c_e_1, qm2, ks2_1, ks2_2, phi_h2o,
                  rho_hydrogel=rho_hydrogel))
 
     return sigma
