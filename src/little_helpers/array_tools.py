@@ -157,3 +157,14 @@ def segment_xy_values(x_values, segment_borders, y_values=None):
         return (x_segments, y_segments)
     else:
         return x_segments
+    
+def is_numeric(array):
+    array = np.asarray(array)
+    # Make sure all values are numeric or can be converted to numeric
+    try:
+        array.astype(float)
+        numeric = True
+    except:
+        numeric = False
+
+    return numeric
