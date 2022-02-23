@@ -7,6 +7,116 @@ Created on Thu Jan 27 19:12:39 2022
 
 import numpy as np
 
+
+def point_inside_circle(
+        x_values, y_values, z_values=None, x_c=0, y_c=0, z_c=None, r=1):
+    """
+    Calculate if a set of points is inside a circle.
+
+    Parameters
+    ----------
+    x_values : float or ndarray
+        The x coordinates of the points.
+    y_values : float or ndarray
+        The y coordinates of the points. Must have the same length like
+        x_values.
+    z_values : float or ndarray, optional
+        The z coordinates of the points. Must have the same length like
+        x_values. The default is None so that calculations are done in 2D.
+    x_c : float, optional
+        The x coordinate of the circle center. The default is 0.
+    y_c : float, optional
+        The y coordinate of the circle center. The default is 0.
+    z_c : float or None, optional
+        The z coordinate of the circle center. Default is None so that
+        calculations are done in 2D.
+    r : float, optinal
+        The radius of the circle. The default is 1.
+
+    Returns
+    -------
+    bool or ndarray
+        A boolean or an array of booleans stating if the points are within the
+        circle. Has the same shape like x_values and y_values.
+
+    """
+    if (z_c is None) or (z_values is None):
+        params = np.asarray([x_values-x_c, y_values-y_c])
+    else:
+        params = np.asarray([x_values-x_c, y_values-y_c, z_values-z_c])
+
+    return ((params)**2).sum(axis=0) <= r**2
+
+
+def point_inside_cartesianbox(
+        x_values, y_values=None, z_values=None, x_limits=[-1, 1],
+        y_limits=[-1, 1], z_limits=[-1, 1]):
+    """
+    Calculate if points are inside of a cartesian box.
+
+    The cartesian box can be a 1D, 2D or 3D box. The 2D box is a rectangle and
+    the 3D box a rectangular prism.
+
+    Parameters
+    ----------
+    x_values : float or ndarray
+        The x coordinates of the points.
+    y_values : float or ndarray, optional
+        The y coordinates of the points. Must have the same length like
+        x_values. The default is None.
+    z_values : float or ndarray, optional
+        The z coordinates of the points. Must have the same length like
+        x_values. The default is None.
+    x_limits : ndarray or None, optional
+        Contains two elements, first the lower limit and second the upper limit
+        allowed for the x coordinate. Each value can be None, so that the
+        corresponding limit does not exist. The default is [-1, 1].
+    y_limits : ndarray or None, optional
+        Contains two elements, first the lower limit and second the upper limit
+        allowed for the y coordinate. Each value can be None, so that the
+        corresponding limit does not exist. The default is [-1, 1].
+    z_limits : ndarray or None, optional
+        Contains two elements, first the lower limit and second the upper limit
+        allowed for the z coordinate. Each value can be None, so that the
+        corresponding limit does not exist. The default is [-1, 1].
+
+    Returns
+    -------
+    ndarray or bool
+        A boolean ndarray or a signle boolean value in the shape of x_values,
+        stating if the points are within the box or not.
+
+    """
+    if (y_values is None) and (z_values is None):
+        dims = 1
+    elif z_values is None:
+        dims = 2
+    else:
+        dims = 3
+
+    limits = np.asarray([curr_lims for curr_lims
+                         in [x_limits, y_limits, z_limits][:dims]])
+    coords = np.asarray([curr_coords for curr_coords in
+                         [x_values, y_values, z_values][:dims]])
+
+    inside_box = np.empty_like(coords, dtype='bool')
+
+    for curr_idx, (curr_values, curr_limits) in enumerate(zip(coords, limits)):
+        if (curr_limits is None) or (curr_limits[0] is None):
+            below_lower = np.full_like(curr_values, False, dtype='bool')
+        else:
+            below_lower = curr_values < curr_limits[0]
+
+        if (curr_limits is None) or (curr_limits[1] is None):
+            above_upper = np.full_like(curr_values, False, dtype='bool')
+        else:
+            above_upper = curr_values > curr_limits[1]
+
+        inside_box[curr_idx] = ~(below_lower | above_upper)
+
+    return np.all(inside_box, axis=0)
+
+
 def line_through_box(x_values, y_values, box={'x': [-1, 1], 'y': [-1, 1]}):
     """
     Calculate if a line defined by two points passes through a rectangular box.
@@ -45,19 +155,18 @@ def line_through_box(x_values, y_values, box={'x': [-1, 1], 'y': [-1, 1]}):
     if slope != 0:
         intersect_x = np.sort((box['y']-intercept)/slope)
         overlap_x = [max(intersect_x[0], box['x'][0]),
-                      min(intersect_x[1], box['x'][1])]
+                     min(intersect_x[1], box['x'][1])]
         overlap_x = overlap_x if overlap_x[0] < overlap_x[1] else []
     else:
-        if ((y_values[0] > box['y'][0]) &
-            (y_values[0] < box['y'][1])):
+        if ((y_values[0] > box['y'][0]) & (y_values[0] < box['y'][1])):
             overlap_x = box['x']
         else:
             overlap_x = []
 
     if overlap_x:
         overlap_y = [slope*curr_x+intercept for curr_x in overlap_x]
-        score =  np.sqrt((overlap_x[1]-overlap_x[0])**2 +
-                         (overlap_y[1]-overlap_y[0])**2)
+        score = np.sqrt((overlap_x[1]-overlap_x[0])**2 +
+                        (overlap_y[1]-overlap_y[0])**2)
         return (score, overlap_x, overlap_y)
     else:
         return (0, [], [])
