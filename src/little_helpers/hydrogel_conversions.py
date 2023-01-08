@@ -52,7 +52,7 @@ def eds_to_volume_fraction(eds, rho_polymer=1, rho_swelling=1,
     else:
         raise ValueError('No valid value for eds_mode given.')
 
-    v_2s = 1/(eds*rho_swelling/rho_polymer+1)
+    v_2s = 1/(eds*rho_polymer/rho_swelling+1)
     if output == 'polymer':
         return v_2s
     elif output == 'solvent':
