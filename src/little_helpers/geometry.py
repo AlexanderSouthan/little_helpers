@@ -6,12 +6,16 @@ Created on Thu Jan 27 19:12:39 2022
 """
 
 import numpy as np
+from matplotlib.patches import Polygon
 
 
 def point_inside_circle(
         x_values, y_values, z_values=None, x_c=0, y_c=0, z_c=None, r=1):
     """
     Calculate if a set of points is inside a circle.
+
+    The circle can be 2D or 3D (a sphere). This function could be easily
+    adapted to be usable for n-dimensional spheres.
 
     Parameters
     ----------
@@ -46,6 +50,39 @@ def point_inside_circle(
         params = np.asarray([x_values-x_c, y_values-y_c, z_values-z_c])
 
     return ((params)**2).sum(axis=0) <= r**2
+
+
+def point_inside_polygon(x_values, y_values, polygon_x, polygon_y):
+    """
+    Calculate if a set of points is inside a polygon.
+
+    This function works fully in 2D, so the corresponding matplotlib method
+    can be used directly, making the code very short.
+
+    Parameters
+    ----------
+    x_values : float or ndarray
+        The x coordinates of the points.
+    y_values : float or ndarray
+        The y coordinates of the points. Must have the same length like
+        x_values.
+    polygon_x : ndarray
+        An array with n elements, giving the x coordinates of the n points that
+        form the polygon.
+    polygon_y : ndarray
+        An array with n elements, giving the y coordinates of the n points that
+        form the polygon.
+
+    Returns
+    -------
+    bool or ndarray
+        A boolean or an array of booleans stating if the points are within the
+        polygon. Has the same shape like x_values and y_values.
+
+    """
+    coords = np.asarray([x_values, y_values]).T
+    polygon = Polygon(np.array([polygon_x, polygon_y]).T, closed=True)
+    return polygon.contains_points(coords)
 
 
 def point_inside_cartesianbox(
@@ -131,7 +168,7 @@ def line_through_box(x_values, y_values, box={'x': [-1, 1], 'y': [-1, 1]}):
         A list containing two values which are the x coodinates of the two
         data points.
     y_values : list or ndarray
-        A list containing two values which are the x coodinates of the two
+        A list containing two values which are the y coodinates of the two
         data points.
     box : dict, optional
         A dictionary containing the box limits. Must contain the keys 'x' for

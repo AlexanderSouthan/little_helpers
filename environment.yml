@@ -4,6 +4,7 @@ dependencies:
   - scikit-learn
   - scipy
   - statsmodels
+  - matplotlib
   - pip
   - pip:
     - sympy
