@@ -435,7 +435,7 @@ def Herschel_Bulkley(x, yield_stress, k, n):
 
     return yield_stress + k * x**n
 
-def cum_dist_normal(x_values, sigma, x_offset, amp=1):
+def cum_dist_normal(x_values, sigma, x_offset, amp=1, y_offset=0):
     """
     Cumulative distribution function for the normal distribution.
 
@@ -460,7 +460,7 @@ def cum_dist_normal(x_values, sigma, x_offset, amp=1):
     """
     x_values = np.asarray(x_values)
 
-    return amp*1/2*(1+erf((x_values-x_offset)/np.sqrt(2*sigma**2)))
+    return amp*1/2*(1+erf((x_values-x_offset)/np.sqrt(2*sigma**2)))+y_offset
 
 def cum_dist_normal_with_rise(x_values, sigma, x_offset, slope, amp=1,
                               linear_rise='full'):
