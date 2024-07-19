@@ -504,3 +504,29 @@ def cum_dist_normal_with_rise(x_values, sigma, x_offset, slope, amp=1,
         linear_part[linear_mask] = (x_values[linear_mask]-x_offset)*slope
         function_values += linear_part
     return function_values
+
+def percolation_growth(x_values, k_e, t_c, amp=1):
+    """
+    Function for the gel yields of growing networks that follow percolation
+    theory.
+
+    Parameters
+    ----------
+    x_values : ndarray
+        The x_values used for the calculation.
+    k_e : float
+        The efective growth coefficient for the percolating cluster.
+    t_c : float
+        The critical time when a percolating cluster is formed.
+    amp : float, optional
+        The plateau value of the gel yield. The default is 1, meaning
+        quantitative conversion.
+
+    Returns
+    -------
+    The calculated function values.
+
+    """
+    x_values = np.asarray(x_values)
+
+    return amp*(1-np.exp(-k_e*(x_values - t_c)))
