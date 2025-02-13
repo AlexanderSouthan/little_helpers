@@ -530,3 +530,28 @@ def percolation_growth(x_values, k_e, t_c, amp=1):
     x_values = np.asarray(x_values)
 
     return amp*(1-np.exp(-k_e*(x_values - t_c)))
+
+def exp_decay(x_values, amp, half_life, y_offset=0):
+    """
+    A simple exponential decay function
+
+    Parameters
+    ----------
+    x_values : ndarray
+        The x_values used for calculation.
+    amp : float
+        The amplitude of the exponential function, i.e. its value at x=0.
+    half_life : float
+        The x interval at which the function values are halved.
+    y_offset : float, optional
+        The y offset of the function, i.e. the value it approaches at infinite
+        x values. The default is 0.
+
+    Returns
+    -------
+    The calculated function values.
+
+    """
+    x_values = np.asarray(x_values)
+    
+    return amp*np.exp(-x_values*np.log(2)/half_life)+y_offset
