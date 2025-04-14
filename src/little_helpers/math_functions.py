@@ -331,7 +331,7 @@ def boxcar_convolution(x, boxcar_start, boxcar_end, convolution_function,
         x_min_convolution, x_max_convolution+x_spacing/2, x_spacing)
 
     y_con_func = convolution_function(x_values_convolution, *con_func_params)
-    y_con_func_integral = integrate.cumtrapz(y_con_func, x_values_convolution,
+    y_con_func_integral = integrate.cumulative_trapezoid(y_con_func, x_values_convolution,
                                              initial=0)
 
     function_values = (y_con_func_integral[2*x_addition_datapoints:] -
