@@ -555,3 +555,27 @@ def exp_decay(x_values, amp, half_life, y_offset=0):
     x_values = np.asarray(x_values)
     
     return amp*np.exp(-x_values*np.log(2)/half_life)+y_offset
+
+def cauchy(x_values, n0, n1, n2=0):
+    """
+    Calculate refractive index using Cauchy's equation.
+
+    Parameters
+    ----------
+    x_values : ndarray
+        The wavelengths in nanometers.
+    n0 : float
+        First parameter in Cauchy equation.
+    n1 : float
+        Second parameter in Cauchy's equation.
+    n2 : float, optional
+        Third parameter in Cauchy's equation. The default is 0.
+
+    Returns
+    -------
+    The calculated refractive indices for the provided wavelengths.
+
+    """
+    x_values = np.asarray(x_values)
+
+    return n0 + n1/x_values**2 + n2/x_values**4
