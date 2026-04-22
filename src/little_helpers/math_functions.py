@@ -579,3 +579,39 @@ def cauchy(x_values, n0, n1, n2=0):
     x_values = np.asarray(x_values)
 
     return n0 + n1/x_values**2 + n2/x_values**4
+
+def water_fraction(x_values, n_polymer, n_water=1.333):
+    """
+    Calculate the water volume fraction in a swollen polymer based on
+    refractive index of pure polymer and the swollen polymer.
+
+    Parameters
+    ----------
+    x_values : ndarray
+        The sample refractive indices, i.e. the refractive indices of the
+        swollen polymer samples.
+    n_polymer : ndarray or float
+        The refractive index of the pure polymer. Can be an ndarray of the same
+        length like x_values with one value for each sample, or a float that is
+        used for all samples.
+    n_water : float, optional
+        The refractive index of water. The default is 1.333.
+
+    Returns
+    -------
+    TYPE
+        DESCRIPTION.
+
+    """
+    x_values = np.asarray(x_values)
+    n_polymer = np.asarray(n_polymer)
+    if (len(n_polymer) != len(x_values)) and (len(n_polymer) > 1):
+        raise ValueError('n_polymer must contain an equal number of elements'
+                         ' like x_values ({}), or must be a single value. '
+                         'Instead, it contains {} values.'.format(
+                             len(x_values), len(n_polymer)))
+    
+    return (
+        ((x_values**2-1)/(x_values**2+2) - (n_polymer**2-1)/(n_polymer**2+2)) / 
+        ((n_water**2-1)/(n_water**2+2)-(n_polymer**2-1)/(n_polymer**2+2))
+        )
