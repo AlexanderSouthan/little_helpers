@@ -556,6 +556,14 @@ def exp_decay(x_values, amp, half_life, y_offset=0):
     
     return amp*np.exp(-x_values*np.log(2)/half_life)+y_offset
 
+def exp_rise(x_values, amp, time_constant):
+    x_values = np.asarray(x_values)
+    return amp * (1 - np.exp(-x_values/time_constant))
+
+def biexp_rise(x_values, amp_1, time_constant_1, amp_2, time_constant_2):
+    x_values = np.asarray(x_values)
+    return (amp_1+amp_2) - amp_1*np.exp(-x_values*time_constant_1) - amp_2*np.exp(-x_values*time_constant_2)
+    
 def cauchy(x_values, n0, n1, n2=0):
     """
     Calculate refractive index using Cauchy's equation.
@@ -615,3 +623,8 @@ def water_fraction(x_values, n_polymer, n_water=1.333):
         ((x_values**2-1)/(x_values**2+2) - (n_polymer**2-1)/(n_polymer**2+2)) / 
         ((n_water**2-1)/(n_water**2+2)-(n_polymer**2-1)/(n_polymer**2+2))
         )
+
+def power_law(x_values, front_factor, exponent):
+    x_values = np.asarray(x_values)
+
+    return front_factor * ((x_values)**exponent)
