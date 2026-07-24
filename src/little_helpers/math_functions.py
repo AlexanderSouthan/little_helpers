@@ -558,12 +558,40 @@ def exp_decay(x_values, amp, half_life, y_offset=0):
 
 def exp_rise(x_values, amp, time_constant):
     x_values = np.asarray(x_values)
-    return amp * (1 - np.exp(-x_values/time_constant))
+    return amp * (1 - np.exp(-x_values*time_constant))
+
+def exp_rise_2(x_values, amp, exponent, time_constant):
+    """
+    A function with time dependent rate constant.
+
+    Parameters
+    ----------
+    x_values : TYPE
+        DESCRIPTION.
+    amp : TYPE
+        DESCRIPTION.
+    exponent : TYPE
+        DESCRIPTION.
+    time_constant : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    TYPE
+        DESCRIPTION.
+
+    """
+    x_values = np.asarray(x_values)
+    return amp * (1 - np.exp(-time_constant* x_values**(exponent+1) / (exponent+1)))
 
 def biexp_rise(x_values, amp_1, time_constant_1, amp_2, time_constant_2):
     x_values = np.asarray(x_values)
     return (amp_1+amp_2) - amp_1*np.exp(-x_values*time_constant_1) - amp_2*np.exp(-x_values*time_constant_2)
-    
+
+def pseudo_second_order(x_values, amp, rate_constant):
+    x_values = np.asarray(x_values)
+    return (rate_constant * amp**2 * x_values)/(1+rate_constant * amp * x_values)
+
 def cauchy(x_values, n0, n1, n2=0):
     """
     Calculate refractive index using Cauchy's equation.
