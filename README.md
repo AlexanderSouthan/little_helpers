@@ -13,6 +13,10 @@ pip install little_helpers
 * closest_index: Find the index of a value in array x_values that is clostest to x.
 * segment_xy_values: Segment the x_values and y_values according to segment borders.
 
+## geometry.py
+
+## hydrogel_conversions.py
+
 ## math_functions.py
 * langmuir_isotherm: Calculate the q_e values of a simple Langmuir isotherm.
 * langmuir_isotherm_hydrogel: Calculate the adsotpion inside a hydrogel based on a Langmuir model taking the swelling into account.
@@ -27,8 +31,15 @@ pip install little_helpers
 * cum_dist_normal: Cumulative distribution function for the normal distribution.
 * cum_dist_normal_with_rise: Superposition of cum_dist_normal and a linear function through the origin.
 
+## math_to_word.py
+
 ## num_derive.py
 A simple method to calculate the derivative of discrete data.
 
 ## statsmodel_wrapper.py
 A universal sklearn-style wrapper for statsmodels regressors.
+
+## table_of_elements.py
+A table containing information about chemical elements, currently the atomic
+number, the atomic weight, the element name and element symbol.
+
